@@ -1,0 +1,34 @@
+.profile__status::after {
+  content: "";
+  width: 13px;
+  border-radius: 100px;
+  right: 248px;
+  top: 33px;
+  height: 13px;
+  background-color: #3ba55d;
+  border: 2px solid black;
+  position: absolute;
+}
+
+.friend__profile__status__active__leftslider::after{
+  content: "";
+  width: 13px;
+  border-radius: 100px;
+  right: 235px;
+  top: 33px;
+  height: 13px;
+  background-color: #3ba55d;
+  border: 2px solid black;
+  position: absolute;
+}
+.friend__profile__status__offline__leftslider::after {
+  content: "";
+  width: 13px;
+  border-radius: 100px;
+  right: 235px;
+  top: 33px;
+  height: 13px;
+  background-color: #7c7c7c;
+  border: 2px solid black;
+  position: absolute;
+}

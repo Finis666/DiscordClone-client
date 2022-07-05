@@ -1,0 +1,23 @@
+.login__container{
+    background-image: url("../assets/images/landing/bg.png");
+    background-repeat: no-repeat;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+}
+.login__continuebtn{
+    background-color: #5865f2;
+    border-radius: 5px;
+    color: #FFFFFF;
+    height: 45px;
+    margin-top: 25px;
+    cursor: pointer;
+    transition: background-color 300ms ease-in-out;
+
+}
+.login__continuebtn:hover{
+    transition: background-color 300ms ease-in-out;
+    background-color: #3b4af3;
+}

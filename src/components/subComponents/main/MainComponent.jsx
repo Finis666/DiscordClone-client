@@ -1,0 +1,48 @@
+import React, { useState } from "react";
+import AllFriends from "./components/AllFriends";
+import Navbar from "./components/Navbar";
+import "../../../css/MainComponent.css";
+import Pending from "./components/Pending";
+import AddFriend from "./components/AddFriend";
+function MainComponent(props) {
+  return (
+    <div className="flex flex-col">
+      <Navbar
+        navigation={props.navigation}
+        setNavigation={props.setNavigation}
+      />
+      {props.navigation.map((item) => {
+        if (item.isOn && item.name === "All") {
+          return (
+            <React.Fragment key={item.name}>
+              <AllFriends friendsList={props.friendsList} />
+            </React.Fragment>
+          );
+        } else if (item.isOn && item.name === "Pending") {
+          return (
+            <React.Fragment key={item.name}>
+              <Pending
+                pendingList={props.pendingList}
+                setPendingList={props.setPendingList}
+                friendsList={props.friendsList}
+                setFriendsList={props.setFriendsList}
+              />
+              ;
+            </React.Fragment>
+          );
+        } else if (item.isOn && item.name === "Add Friend") {
+          return (
+            <div
+              className="w-full h-full mx-auto flex flex-col justify-center rounded-[3px] select-none mt-7 pl-[300px]"
+              key={item.name}
+            >
+              <AddFriend />
+            </div>
+          );
+        }
+      })}
+    </div>
+  );
+}
+
+export default MainComponent;

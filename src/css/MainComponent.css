@@ -1,0 +1,23 @@
+
+.friend__status__main__online::after{
+    content: "";
+    width: 13px;
+    border-radius: 100px;
+    right: 0px;
+    top: 40px;
+    height: 13px;
+    background-color: #3ba55d;
+    border: 2px solid black;
+    position: absolute;
+  }
+  .friend__status__main__offline::after {
+    content: "";
+    width: 13px;
+    border-radius: 100px;
+    left: 28px;
+    top: 40px;
+    height: 13px;
+    background-color: #7c7c7c;
+    border: 2px solid black;
+    position: absolute;
+  }
