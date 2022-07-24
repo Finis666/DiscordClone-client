@@ -20,6 +20,9 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/app" element={<AppHome />} />
           </Route>
+          <Route element={<ProtectedRoute />}>
+            <Route path="/app/chat/:conversationId" element={<AppHome />} />
+          </Route>
         </Routes>
       </Router>
     </div>

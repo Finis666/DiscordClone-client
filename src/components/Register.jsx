@@ -97,6 +97,12 @@ function Register() {
             data: response.data[0].username,
           })
         );
+        dispatch(
+          userActions.setUserId({
+            type: "register",
+            data: response.data[0].userId,
+          })
+        );
         navigate("/app");
         return;
       }

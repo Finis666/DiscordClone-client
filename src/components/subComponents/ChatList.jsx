@@ -1,11 +1,19 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import defaultImage from "../../assets/images/default/default1.jpg";
-function FriendsList(props) {
+function ChatList(props) {
+  const navigate = useNavigate();
+  const handleNavigate = (id) => {
+    navigate(`/app/chat/${id}`);
+  };
+
   return (
     <>
-      {typeof props.friends == "string" ? (
+      {typeof props.chats == "string" ? (
         <div className="flex flex-col justify-center items-center absolute w-full h-full">
-          <p className="text-white font-poopins font-normal">{props.friends}</p>
+          <p className="text-white font-poopins font-normal">
+            Looks like you have no chats
+          </p>
           <button
             className="font-poopins font-normal text-white bg-[#3ba55d] active:bg-[#318d4e] transition-all hover:bg-[#287942] h-10 rounded-lg w-[95%] mt-4"
             onClick={() =>
@@ -21,13 +29,24 @@ function FriendsList(props) {
           </button>
         </div>
       ) : (
-        props.friends.map((item) => {
+        props.chats.map((item) => {
           return (
             <div
+              key={item.userId}
               className="flex flex-row items-center h-[50px] rounded-[3px] text-[#b0b4b9] hover:text-[#d8dce2]  hover:bg-[#555861] cursor-pointer relative"
-              key={item.username}
+              onClick={() => {
+                handleNavigate(item.userId);
+              }}
             >
-              <p className="friend__profile__status__offline__leftslider">
+              <p
+                className={
+                  item.active === undefined
+                    ? "friend__profile__status__offline__leftslider"
+                    : item.active === true
+                    ? "friend__profile__status__active__leftslider"
+                    : "friend__profile__status__offline__leftslider"
+                }
+              >
                 <img
                   src={defaultImage}
                   alt="Profile avatar"
@@ -45,4 +64,4 @@ function FriendsList(props) {
   );
 }
 
-export default FriendsList;
+export default ChatList;

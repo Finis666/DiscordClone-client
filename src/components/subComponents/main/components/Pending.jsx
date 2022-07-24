@@ -7,10 +7,14 @@ import Tooltip from "@mui/material/Tooltip";
 import SimpleBar from "simplebar-react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import { useSelector } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 function Pending(props) {
   const [searchTerm, setSearchTerm] = useState("");
   const [currPendingLength, setCurrPendingLength] = useState(0);
+  const currentUserId = useSelector((state) => state.user.userId);
+  const currentUsername = useSelector((state) => state.user.username);
+  const socket = props.socket;
   useEffect(() => {
     if (typeof props.pendingList === "string") {
       return;
@@ -28,11 +32,11 @@ function Pending(props) {
     }
   }, [searchTerm]);
 
-  const handleAccept = async (username) => {
+  const handleAccept = async (userId, username) => {
     try {
       let response = await axios.put(
         "/api/friends/acceptFriend",
-        { username: username },
+        { userId: userId },
         { headers: { "x-auth-token": localStorage.getItem("token") } }
       );
       if (!response.data[0].success) {
@@ -45,7 +49,32 @@ function Pending(props) {
       } else {
         if (props.pendingList.length === 1) {
           props.setPendingList("You have no pending request.");
-          props.setFriendsList([...props.friendsList, { username: username }]);
+          if (typeof props.friendsList === "string") {
+            props.setFriendsList([
+              { username: username, userId: userId, active: false },
+            ]);
+          } else {
+            props.setFriendsList([
+              ...props.friendsList,
+              { username: username, userId: userId, active: false },
+            ]);
+          }
+          if (typeof props.chats === "string") {
+            props.setChats([
+              { userId: userId, username: username, active: false },
+            ]);
+          } else {
+            props.setChats([
+              ...props.chats,
+              { userId: userId, username: username, active: false },
+            ]);
+          }
+          // handling socket on accept
+          socket?.emit("pending_accept", {
+            currUserId: currentUserId,
+            currUsername: currentUsername,
+            reqId: userId,
+          });
           toast(response.data[0].msg, {
             type: "success",
             toastId: "responseSuccess",
@@ -55,10 +84,36 @@ function Pending(props) {
           return;
         } else {
           let newPendingList = props.pendingList.filter((item) => {
-            return item.username !== username;
+            return item.userId !== userId;
           });
           props.setPendingList(newPendingList);
-          props.setFriendsList([...props.friendsList, { username: username }]);
+
+          if (typeof props.friendsList === "string") {
+            props.setFriendsList([
+              { username: username, userId: userId, active: false },
+            ]);
+          } else {
+            props.setFriendsList([
+              ...props.friendsList,
+              { username: username, userId: userId, active: false },
+            ]);
+          }
+          if (typeof props.chats === "string") {
+            props.setChats([
+              { userId: userId, username: username, active: false },
+            ]);
+          } else {
+            props.setChats([
+              ...props.chats,
+              { userId: userId, username: username, active: false },
+            ]);
+          }
+          // handling socket on accept
+          socket?.emit("pending_accept", {
+            currUserId: currentUserId,
+            currUsername: currentUsername,
+            reqId: userId,
+          });
           toast(response.data[0].msg, {
             type: "success",
             toastId: "responseSuccess",
@@ -78,11 +133,11 @@ function Pending(props) {
     }
   };
 
-  const handleDecline = async (username) => {
+  const handleDecline = async (userId) => {
     try {
       let response = await axios.put(
         "/api/friends/declineRequest",
-        { username: username },
+        { userId: userId },
         { headers: { "x-auth-token": localStorage.getItem("token") } }
       );
       if (!response.data[0].success) {
@@ -105,7 +160,7 @@ function Pending(props) {
           return;
         } else {
           let newPendingList = props.pendingList.filter((item) => {
-            return item.username !== username;
+            return item.userId !== userId;
           });
           props.setPendingList(newPendingList);
           toast(response.data[0].msg, {
@@ -177,7 +232,9 @@ function Pending(props) {
                       >
                         <div
                           className="bg-[#2f3136] rounded-[50px] p-2 cursor-pointer mr-2"
-                          onClick={() => handleAccept(item.username)}
+                          onClick={() =>
+                            handleAccept(item.userId, item.username)
+                          }
                         >
                           <GoVerified color="#5eff4f" size={"30px"} />
                         </div>
@@ -189,7 +246,7 @@ function Pending(props) {
                       >
                         <div
                           className="bg-[#2f3136] rounded-[50px] p-2 cursor-pointer"
-                          onClick={() => handleDecline(item.username)}
+                          onClick={() => handleDecline(item.userId)}
                         >
                           <ImCancelCircle color="#ff0a0a" size={"30px"} />
                         </div>

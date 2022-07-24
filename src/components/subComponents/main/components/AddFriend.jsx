@@ -5,10 +5,14 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { CircularProgress } from "@mui/material";
-function AddFriend() {
+import { useSelector } from "react-redux";
+function AddFriend(props) {
   const [username, setUsername] = useState("");
   const [isEmpty, setIsEmpty] = useState(true); // check for submit btn
   const [requestOnProccess, setRequestOnProccess] = useState(false);
+  const socket = props.socket;
+  const currUsername = useSelector((state) => state.user.username);
+  const currUserId = useSelector((state) => state.user.userId);
   useEffect(() => {
     if (username.length > 0) {
       setIsEmpty(false);
@@ -44,6 +48,7 @@ function AddFriend() {
     }
     try {
       setRequestOnProccess(true);
+      setUsername("");
       let response = await axios.post(
         "/api/friends/addFriend",
         { username: username },
@@ -64,6 +69,11 @@ function AddFriend() {
           toastId: "responseSuccess",
           pauseOnFocusLoss: false,
           autoClose: 4000,
+        });
+        socket.emit("friend_request_send", {
+          username: currUsername,
+          userId: currUserId,
+          friendId: response.data[0].friendId,
         });
         return;
       }
@@ -89,6 +99,7 @@ function AddFriend() {
           type="text"
           placeholder="Enter a Username"
           maxLength={32}
+          value={username}
           className="w-[100%] h-[45px] font-poopins bg-[#202225] text-[#555759] pl-3 rounded-[8px] relative empty:text-white"
           onChange={(e) => setUsername(e.target.value)}
         />

@@ -4,14 +4,16 @@ import { AiFillMessage } from "react-icons/ai";
 import defaultImage from "../../../../assets/images/default/default1.jpg";
 import Tooltip from "@mui/material/Tooltip";
 import SimpleBar from "simplebar-react";
-function AllFriends(props) {
+function Online(props) {
+  const [onlineList, setOnlineList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currFriendsLength, setCurrFriendsLength] = useState(0);
+
   useEffect(() => {
-    if (typeof props.friendsList === "string") {
+    if (typeof onlineList === "string") {
       return;
     }
-    let filterFriendsCount = props.friendsList.filter((item) => {
+    let filterFriendsCount = onlineList.filter((item) => {
       if (searchTerm == "") {
         return item;
       } else if (
@@ -22,9 +24,26 @@ function AllFriends(props) {
     });
     setCurrFriendsLength(filterFriendsCount.length);
   }, [searchTerm]);
+
+  //handling online list
+  useEffect(() => {
+    if (typeof props.friendsList === "string") {
+      setOnlineList(props.friendsList);
+    } else {
+      let newFriendList = props.friendsList.filter((friend) => {
+        return friend.active !== false;
+      });
+      setOnlineList(newFriendList);
+    }
+  }, [props.friendsList]);
+  useEffect(() => {
+    if (typeof onlineList !== "string") {
+      setCurrFriendsLength(onlineList.length);
+    }
+  }, [onlineList]);
   return (
     <>
-      {typeof props.friendsList === "string" ? (
+      {typeof onlineList === "string" ? (
         <div className="w-full fixed h-full mx-auto flex flex-col items-center justify-center rounded-[3px] select-none mt-7 pl-[300px]">
           <h1 className="font-poopins text-white">{props.friendsList}</h1>
         </div>
@@ -32,10 +51,10 @@ function AllFriends(props) {
         <div className="w-full h-full mx-auto flex flex-col justify-center rounded-[3px] select-none mt-7 pl-[300px]">
           <Search setSearchTerm={setSearchTerm} />
           <h1 className="font-poopins text-[#c5c5c5] ml-9 mt-6">
-            ALL FRIENDS - {currFriendsLength}
+            ONLINE - {currFriendsLength}
           </h1>
           <SimpleBar className="overflow-y-auto overflow-x-hidden h-[750px]">
-            {props.friendsList
+            {onlineList
               .filter((val) => {
                 if (searchTerm == "") {
                   return val;
@@ -53,15 +72,7 @@ function AllFriends(props) {
                   >
                     <div className="w-full bg-[#4a4e57] h-[1px]"></div>
                     <div className="flex flex-row items-center mt-2 mb-2">
-                      <p
-                        className={
-                          item.active === undefined
-                            ? "friend__status__main__offline"
-                            : item.active === true
-                            ? "friend__status__main__online"
-                            : "friend__status__main__offline"
-                        }
-                      >
+                      <p className="friend__status__main__online">
                         <img
                           src={defaultImage}
                           alt="default image"
@@ -93,4 +104,4 @@ function AllFriends(props) {
   );
 }
 
-export default AllFriends;
+export default Online;
