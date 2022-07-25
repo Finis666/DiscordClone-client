@@ -65,6 +65,22 @@ function Login() {
             data: response.data[0].userId,
           })
         );
+        console.log(response.data[0]);
+        if (response.data[0].isAdmin) {
+          dispatch(
+            userActions.setIsAdmim({
+              type: "register",
+              data: true,
+            })
+          );
+        } else {
+          dispatch(
+            userActions.setIsAdmim({
+              type: "register",
+              data: false,
+            })
+          );
+        }
         navigate("/app");
         return;
       }

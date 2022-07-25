@@ -103,6 +103,22 @@ function Register() {
             data: response.data[0].userId,
           })
         );
+        if (response.data[0].isAdmin) {
+          console.log("yas");
+          dispatch(
+            userActions.setIsAdmim({
+              type: "register",
+              data: true,
+            })
+          );
+        } else {
+          dispatch(
+            userActions.setIsAdmim({
+              type: "register",
+              data: false,
+            })
+          );
+        }
         navigate("/app");
         return;
       }

@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import loadingGif from "../../assets/brand/loading-discord.gif";
 import { ToastContainer, toast } from "react-toastify";
 import ConversationNotFound from "./ConversationNotFound";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ChatSlider from "../subComponents/ChatSlider";
 import defaultImage from "../../assets/images/default/default1.jpg";
 import SimpleBar from "simplebar-react";
@@ -17,6 +17,7 @@ function Chat(props) {
   const navigate = useNavigate();
   const [friendProfile, setFriendProfile] = useState({});
   const scrollableNodeRef = React.createRef();
+  const { conversationId } = useParams();
   useEffect(() => {
     if (lastConversationId.current !== props.conversationId) {
       isMount.current = false;
@@ -89,6 +90,9 @@ function Chat(props) {
 
   useEffect(() => {
     props.socket?.on("new_message_get", (data) => {
+      if (conversationId !== data.userId) {
+        return;
+      }
       if (messages === false) {
         setMessages([
           {

@@ -5,6 +5,7 @@ import AppHome from "./components/AppHome";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import ProtectDefault from "./AuthRoute/ProtectDefault";
+import Admin from "./components/admin/Admin";
 
 function App() {
   return (
@@ -19,6 +20,9 @@ function App() {
           </Route>
           <Route element={<ProtectedRoute />}>
             <Route path="/app" element={<AppHome />} />
+          </Route>
+          <Route element={<ProtectedRoute />}>
+            <Route path="/app/admin" element={<Admin />} />
           </Route>
           <Route element={<ProtectedRoute />}>
             <Route path="/app/chat/:conversationId" element={<AppHome />} />

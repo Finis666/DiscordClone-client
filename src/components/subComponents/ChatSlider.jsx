@@ -1,6 +1,7 @@
 import React from "react";
 import { FaUserFriends } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
+import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import defaultImage from "../../assets/images/default/default1.jpg";
 import "../../css/LeftFriendsSlider.css";
 import SimpleBar from "simplebar-react";
@@ -8,8 +9,14 @@ import "simplebar-react/dist/simplebar.min.css";
 import ChatList from "./ChatList";
 import Tooltip from "@mui/material/Tooltip";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useState } from "react";
+
 function ChatSlider(props) {
   const navigate = useNavigate();
+  const isAdmin = useSelector((state) => state.user.isAdmin);
+  const [isFriendsActive, setIsFriendsActive] = useState(true);
+  const [isAdminActive, setIsAdminActive] = useState(false);
   return (
     <div className="w-[300px] bg-[#2f3136] h-full fixed mt-[-8px] z-10">
       <div className="flex flex-col w-[100%] items-center">
@@ -22,8 +29,14 @@ function ChatSlider(props) {
         <div
           onClick={() => {
             navigate("/app");
+            setIsAdminActive(false);
+            setIsFriendsActive(true);
           }}
-          className="w-[95%] h-10 flex flex-row items-center mx-auto bg-[#42464d] active:bg-[#5a5e64] mt-6 cursor-pointer select-none rounded-[3px]"
+          className={
+            isFriendsActive
+              ? "w-[95%] h-10 flex flex-row items-center mx-auto bg-[#42464d] active:bg-[#5a5e64] mt-6 cursor-pointer select-none rounded-[3px]"
+              : "w-[95%] h-10 flex flex-row items-center mx-auto  active:bg-[#5a5e64] mt-6 cursor-pointer select-none rounded-[3px]"
+          }
         >
           <FaUserFriends color="#ffffff" fontSize={"30px"} className="ml-5" />
           <h2 className="font-poopins font-semibold text-[#ffffff] ml-4">
@@ -35,6 +48,29 @@ function ChatSlider(props) {
             </div>
           )}
         </div>
+        {isAdmin && (
+          <div
+            onClick={() => {
+              navigate("/app/admin");
+              setIsAdminActive(true);
+              setIsFriendsActive(false);
+            }}
+            className={
+              isAdminActive
+                ? "w-[95%] h-10 flex flex-row items-center mx-auto bg-[#42464d] active:bg-[#5a5e64] mt-6 cursor-pointer select-none rounded-[3px]"
+                : "w-[95%] h-10 flex flex-row items-center mx-auto  active:bg-[#5a5e64] mt-6 cursor-pointer select-none rounded-[3px]"
+            }
+          >
+            <MdOutlineAdminPanelSettings
+              color="#ffffff"
+              fontSize={"30px"}
+              className="ml-5"
+            />
+            <h2 className="font-poopins font-semibold text-[#ffffff] ml-4">
+              Admin Dashboard
+            </h2>
+          </div>
+        )}
         {/* friend list wrappper */}
         <SimpleBar className="w-[95%] h-[82vh] pb-[50vh] flex flex-col mx-auto mt-6 select-none rounded-[3px] overflow-y-auto overflow-x-hidden custom__scrollbar">
           <ChatList chats={props.chats} setNavigation={props.setNavigation} />

@@ -36,7 +36,7 @@ function AppHome() {
       setPendingList(data[1].data[0].msg);
       setChats(data[2].data[0].msg);
       setFinalLoading(false);
-      setSocket(io("http://localhost:3001"));
+      setSocket(io("http://localhost:3000"));
       return;
     }
   }, [loading]);

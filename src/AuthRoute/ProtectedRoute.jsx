@@ -62,6 +62,12 @@ const ProtectedRoute = () => {
                 data: response.data.userId,
               })
             );
+            dispatch(
+              userActions.setIsAdmim({
+                type: "validate",
+                data: response.data.isAdmin,
+              })
+            );
             setIsRequestDone(true);
             return;
           } else {
