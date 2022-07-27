@@ -7,6 +7,8 @@ import loadingGif from "../assets/brand/loading-discord.gif";
 import { useParams } from "react-router-dom";
 import Chat from "./chat/Chat";
 import io from "socket.io-client";
+import { useLocation } from "react-router-dom";
+import Admin from "./admin/Admin";
 
 function AppHome() {
   document.body.style.backgroundColor = "#36393f";
@@ -16,6 +18,7 @@ function AppHome() {
     { name: "Pending", isOn: false },
     { name: "Add Friend", isOn: false },
   ];
+  const location = useLocation();
   const { conversationId } = useParams();
   const [navigation, setNavigation] = useState(initialState);
   const [friendsList, setFriendsList] = useState([]);
@@ -235,37 +238,48 @@ function AppHome() {
             </>
           )}
         </>
-      ) : (
-        // showing friends list and pending list and chats
-        <>
-          {!finalLoading && (
-            <>
-              <div>
-                {
-                  <ChatSlider
-                    chats={chats}
-                    username={username}
-                    pendingList={pendingList}
-                    setNavigation={setNavigation}
-                  />
-                }
-                {
-                  <MainComponent
-                    friendsList={friendsList}
-                    setFriendsList={setFriendsList}
-                    chats={chats}
-                    setChats={setChats}
-                    pendingList={pendingList}
-                    setPendingList={setPendingList}
-                    navigation={navigation}
-                    setNavigation={setNavigation}
-                    socket={socket}
-                  />
-                }
-              </div>
-            </>
-          )}
-        </>
+      ) : location.pathname === '/app/admin' ? (
+       <>
+       {!finalLoading && (
+        <Admin   
+            chats={chats}
+            username={username}
+            pendingList={pendingList}
+            setNavigation={setNavigation} 
+          />
+       )}
+      </>
+      ): (
+         // showing friends list and pending list and chats
+         <>
+         {!finalLoading && (
+           <>
+             <div>
+               {
+                 <ChatSlider
+                   chats={chats}
+                   username={username}
+                   pendingList={pendingList}
+                   setNavigation={setNavigation}
+                 />
+               }
+               {
+                 <MainComponent
+                   friendsList={friendsList}
+                   setFriendsList={setFriendsList}
+                   chats={chats}
+                   setChats={setChats}
+                   pendingList={pendingList}
+                   setPendingList={setPendingList}
+                   navigation={navigation}
+                   setNavigation={setNavigation}
+                   socket={socket}
+                 />
+               }
+             </div>
+           </>
+         )}
+       </>
       )}
     </React.Fragment>
   );

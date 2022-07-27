@@ -8,32 +8,27 @@ import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
 import ChatList from "./ChatList";
 import Tooltip from "@mui/material/Tooltip";
-import { useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useState } from "react";
-
 function ChatSlider(props) {
+  const location = useLocation();
   const navigate = useNavigate();
   const isAdmin = useSelector((state) => state.user.isAdmin);
-  const [isFriendsActive, setIsFriendsActive] = useState(true);
-  const [isAdminActive, setIsAdminActive] = useState(false);
   return (
     <div className="w-[300px] bg-[#2f3136] h-full fixed mt-[-8px] z-10">
       <div className="flex flex-col w-[100%] items-center">
-        <div className="relative top-0 bg-[#202225] w-[95%] h-7 mx-auto flex items-center rounded-[3px] cursor-pointer select-none mt-2">
+        <div className="relative translate-y-[10px] top-0 bg-[#202225] w-[95%] h-7 mx-auto flex items-center rounded-[3px] cursor-pointer select-none mt-2">
           <h1 className="text-[#a3a6aa] font-poopins font-normal text-[15px] pl-1">
             Find or start a converstaion
           </h1>
         </div>
         {/* friends btn */}
         <div
-          onClick={() => {
-            navigate("/app");
-            setIsAdminActive(false);
-            setIsFriendsActive(true);
-          }}
+        onClick={() => {
+          navigate("/app")
+        }}
           className={
-            isFriendsActive
+            location.pathname === "/app"
               ? "w-[95%] h-10 flex flex-row items-center mx-auto bg-[#42464d] active:bg-[#5a5e64] mt-6 cursor-pointer select-none rounded-[3px]"
               : "w-[95%] h-10 flex flex-row items-center mx-auto  active:bg-[#5a5e64] mt-6 cursor-pointer select-none rounded-[3px]"
           }
@@ -50,13 +45,11 @@ function ChatSlider(props) {
         </div>
         {isAdmin && (
           <div
-            onClick={() => {
-              navigate("/app/admin");
-              setIsAdminActive(true);
-              setIsFriendsActive(false);
-            }}
+           onClick={() => {
+            navigate("/app/admin")
+           }}
             className={
-              isAdminActive
+              location.pathname === "/app/admin"
                 ? "w-[95%] h-10 flex flex-row items-center mx-auto bg-[#42464d] active:bg-[#5a5e64] mt-6 cursor-pointer select-none rounded-[3px]"
                 : "w-[95%] h-10 flex flex-row items-center mx-auto  active:bg-[#5a5e64] mt-6 cursor-pointer select-none rounded-[3px]"
             }
