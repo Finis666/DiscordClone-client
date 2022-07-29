@@ -238,48 +238,48 @@ function AppHome() {
             </>
           )}
         </>
-      ) : location.pathname === '/app/admin' ? (
-       <>
-       {!finalLoading && (
-        <Admin   
-            chats={chats}
-            username={username}
-            pendingList={pendingList}
-            setNavigation={setNavigation} 
-          />
-       )}
-      </>
-      ): (
-         // showing friends list and pending list and chats
-         <>
-         {!finalLoading && (
-           <>
-             <div>
-               {
-                 <ChatSlider
-                   chats={chats}
-                   username={username}
-                   pendingList={pendingList}
-                   setNavigation={setNavigation}
-                 />
-               }
-               {
-                 <MainComponent
-                   friendsList={friendsList}
-                   setFriendsList={setFriendsList}
-                   chats={chats}
-                   setChats={setChats}
-                   pendingList={pendingList}
-                   setPendingList={setPendingList}
-                   navigation={navigation}
-                   setNavigation={setNavigation}
-                   socket={socket}
-                 />
-               }
-             </div>
-           </>
-         )}
-       </>
+      ) : location.pathname === "/app/admin" ? (
+        <>
+          {!finalLoading && (
+            <Admin
+              chats={chats}
+              username={username}
+              pendingList={pendingList}
+              setNavigation={setNavigation}
+            />
+          )}
+        </>
+      ) : (
+        // showing friends list and pending list and chats
+        <>
+          {!finalLoading && (
+            <>
+              <div>
+                {
+                  <ChatSlider
+                    chats={chats}
+                    username={username}
+                    pendingList={pendingList}
+                    setNavigation={setNavigation}
+                  />
+                }
+                {
+                  <MainComponent
+                    friendsList={friendsList}
+                    setFriendsList={setFriendsList}
+                    chats={chats}
+                    setChats={setChats}
+                    pendingList={pendingList}
+                    setPendingList={setPendingList}
+                    navigation={navigation}
+                    setNavigation={setNavigation}
+                    socket={socket}
+                  />
+                }
+              </div>
+            </>
+          )}
+        </>
       )}
     </React.Fragment>
   );

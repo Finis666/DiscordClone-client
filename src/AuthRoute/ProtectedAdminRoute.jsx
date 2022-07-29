@@ -39,11 +39,11 @@ const ProtectedRoute = () => {
             headers: { "x-auth-token": localStorage.getItem("token") },
           });
           if (response.data.success) {
-            if(!response.data.isAdmin) {
-                setIsRequestDone(false);
-                isMount.current = true;
-        setInitialRender(true);
-                return;
+            if (!response.data.isAdmin) {
+              setIsRequestDone(false);
+              isMount.current = true;
+              setInitialRender(true);
+              return;
             }
             dispatch(authActions.login());
             dispatch(

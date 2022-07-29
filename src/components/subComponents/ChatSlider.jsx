@@ -24,9 +24,9 @@ function ChatSlider(props) {
         </div>
         {/* friends btn */}
         <div
-        onClick={() => {
-          navigate("/app")
-        }}
+          onClick={() => {
+            navigate("/app");
+          }}
           className={
             location.pathname === "/app"
               ? "w-[95%] h-10 flex flex-row items-center mx-auto bg-[#42464d] active:bg-[#5a5e64] mt-6 cursor-pointer select-none rounded-[3px]"
@@ -44,10 +44,11 @@ function ChatSlider(props) {
           )}
         </div>
         {isAdmin && (
-          <div
-           onClick={() => {
-            navigate("/app/admin")
-           }}
+          <Link
+            // onClick={() => {
+            //   navigate("/app/admin");
+            // }}
+            to="/app/admin"
             className={
               location.pathname === "/app/admin"
                 ? "w-[95%] h-10 flex flex-row items-center mx-auto bg-[#42464d] active:bg-[#5a5e64] mt-6 cursor-pointer select-none rounded-[3px]"
@@ -62,7 +63,7 @@ function ChatSlider(props) {
             <h2 className="font-poopins font-semibold text-[#ffffff] ml-4">
               Admin Dashboard
             </h2>
-          </div>
+          </Link>
         )}
         {/* friend list wrappper */}
         <SimpleBar className="w-[95%] h-[82vh] pb-[50vh] flex flex-col mx-auto mt-6 select-none rounded-[3px] overflow-y-auto overflow-x-hidden custom__scrollbar">
