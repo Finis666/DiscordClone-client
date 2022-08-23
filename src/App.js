@@ -5,7 +5,9 @@ import AppHome from "./components/AppHome";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import ProtectDefault from "./AuthRoute/ProtectDefault";
-import ProtectedAdminRoute from "./AuthRoute/ProtectedAdminRoute";
+import ForgotPassword from "./components/ForgotPassword";
+import ResetPassword from "./components/ResetPassword";
+import PageNotFound from "./components/PageNotFound";
 
 function App() {
   return (
@@ -18,14 +20,29 @@ function App() {
           <Route element={<ProtectDefault />}>
             <Route path="/login" element={<Login />} />
           </Route>
+          <Route element={<ProtectDefault />}>
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+          </Route>
+          <Route element={<ProtectDefault />}>
+            <Route
+              path="/reset-password/:id/:token"
+              element={<ResetPassword />}
+            />
+          </Route>
           <Route element={<ProtectedRoute />}>
             <Route path="/app" element={<AppHome />} />
           </Route>
-          <Route element={<ProtectedAdminRoute />}>
+          <Route element={<ProtectedRoute />}>
             <Route path="/app/admin" element={<AppHome />} />
           </Route>
           <Route element={<ProtectedRoute />}>
+            <Route path="/app/settings" element={<AppHome />} />
+          </Route>
+          <Route element={<ProtectedRoute />}>
             <Route path="/app/chat/:conversationId" element={<AppHome />} />
+          </Route>
+          <Route>
+            <Route path="*" element={<PageNotFound />} />
           </Route>
         </Routes>
       </Router>

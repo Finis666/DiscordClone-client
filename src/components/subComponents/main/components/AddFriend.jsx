@@ -13,6 +13,7 @@ function AddFriend(props) {
   const socket = props.socket;
   const currUsername = useSelector((state) => state.user.username);
   const currUserId = useSelector((state) => state.user.userId);
+  const currUserImage = useSelector((state) => state.user.image);
   useEffect(() => {
     if (username.length > 0) {
       setIsEmpty(false);
@@ -73,6 +74,7 @@ function AddFriend(props) {
         socket.emit("friend_request_send", {
           username: currUsername,
           userId: currUserId,
+          image: currUserImage,
           friendId: response.data[0].friendId,
         });
         return;

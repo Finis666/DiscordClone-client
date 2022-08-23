@@ -127,7 +127,7 @@ function Register() {
     }
   };
   return (
-    <div className="register__container flex">
+    <div className="register__container flex overflow-auto">
       <div className="m-auto mb-auto w-[480px] flex flex-col pb-[40px] bg-[#36393f] rounded-[5px]">
         <h1 className="text-center text-[#FFFFFF] font-poopins font-bold mt-[30px] text-[25px]">
           Create an account

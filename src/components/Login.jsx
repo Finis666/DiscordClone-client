@@ -60,12 +60,17 @@ function Login() {
           })
         );
         dispatch(
+          userActions.setImage({
+            type: "login",
+            data: response.data[0].image,
+          })
+        );
+        dispatch(
           userActions.setUserId({
             type: "login",
             data: response.data[0].userId,
           })
         );
-        console.log(response.data[0]);
         if (response.data[0].isAdmin) {
           dispatch(
             userActions.setIsAdmim({
@@ -90,7 +95,7 @@ function Login() {
     }
   };
   return (
-    <div className="login__container flex">
+    <div className="login__container flex overflow-auto">
       <div className="m-auto mb-auto w-[480px] flex flex-col pb-[30px] bg-[#36393f] rounded-[5px]">
         <div className="flex flex-col justify-center">
           <h1 className="text-center text-[#FFFFFF] font-poopins font-bold mt-[30px] text-[25px]">
@@ -134,7 +139,7 @@ function Login() {
               }}
             />
             <Link
-              to="/"
+              to="/forgot-password"
               className="text-[#00aff4] font-poopins font-normal text-[13px] hover:underline mt-2"
             >
               Forgot your password?

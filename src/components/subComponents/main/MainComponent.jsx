@@ -37,7 +37,7 @@ function MainComponent(props) {
         } else if (item.isOn && item.name === "Add Friend") {
           return (
             <div
-              className="w-full h-full mx-auto flex flex-col justify-center rounded-[3px] select-none mt-7 pl-[300px]"
+              className="w-full h-full mx-auto flex flex-col justify-center rounded-[3px] select-none mt-[70px] lg:mt-7 lg:pl-[300px]"
               key={item.name}
             >
               <AddFriend socket={props.socket} />

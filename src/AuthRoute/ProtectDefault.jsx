@@ -59,6 +59,12 @@ const ProtectedDefault = () => {
               })
             );
             dispatch(
+              userActions.setImage({
+                type: "validate",
+                data: response.data.image,
+              })
+            );
+            dispatch(
               userActions.setUserId({
                 type: "validate",
                 data: response.data.userId,

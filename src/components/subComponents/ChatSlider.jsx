@@ -14,8 +14,9 @@ function ChatSlider(props) {
   const location = useLocation();
   const navigate = useNavigate();
   const isAdmin = useSelector((state) => state.user.isAdmin);
+  const userImage = useSelector((state) => state.user.image);
   return (
-    <div className="w-[300px] bg-[#2f3136] h-full fixed mt-[-8px] z-10">
+    <div className="lg:w-[300px] hidden lg:block lg:bg-[#2f3136] lg:h-full lg:fixed lg:mt-[-8px] z-10">
       <div className="flex flex-col w-[100%] items-center">
         <div className="relative translate-y-[10px] top-0 bg-[#202225] w-[95%] h-7 mx-auto flex items-center rounded-[3px] cursor-pointer select-none mt-2">
           <h1 className="text-[#a3a6aa] font-poopins font-normal text-[15px] pl-1">
@@ -45,9 +46,6 @@ function ChatSlider(props) {
         </div>
         {isAdmin && (
           <Link
-            // onClick={() => {
-            //   navigate("/app/admin");
-            // }}
             to="/app/admin"
             className={
               location.pathname === "/app/admin"
@@ -73,7 +71,11 @@ function ChatSlider(props) {
         <div className="w-[300px] h-[52px] bg-[#292b2f] z-10 flex flex-row mx-auto select-none absolute mb-[-9px] bottom-0 items-center">
           <p className="profile__status">
             <img
-              src={defaultImage}
+              src={
+                !userImage
+                  ? defaultImage
+                  : `${process.env.REACT_APP_SERVER}/cdn/images/${userImage}`
+              }
               alt="Profile image"
               className="w-[40px] h-[40px] rounded-[100px] ml-3"
             />
@@ -82,7 +84,12 @@ function ChatSlider(props) {
             {props.username}
           </p>
           {/* btns */}
-          <div className="flex ml-auto mr-2">
+          <div
+            className="flex ml-auto mr-2"
+            onClick={() => {
+              navigate("/app/settings");
+            }}
+          >
             <Tooltip title="User Settings" disableInteractive>
               <div className="hover:rotate-[40deg]">
                 <IoMdSettings

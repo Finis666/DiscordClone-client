@@ -9,6 +9,7 @@ import Chat from "./chat/Chat";
 import io from "socket.io-client";
 import { useLocation } from "react-router-dom";
 import Admin from "./admin/Admin";
+import Settings from "./settings/Settings";
 
 function AppHome() {
   document.body.style.backgroundColor = "#36393f";
@@ -39,7 +40,7 @@ function AppHome() {
       setPendingList(data[1].data[0].msg);
       setChats(data[2].data[0].msg);
       setFinalLoading(false);
-      setSocket(io("http://localhost:3000"));
+      setSocket(io(process.env.REACT_APP_SERVER));
       return;
     }
   }, [loading]);
@@ -125,6 +126,7 @@ function AppHome() {
             {
               username: friendUser.reqUsername,
               userId: friendUser.reqUserId,
+              image: friendUser.reqImage,
               active: true,
             },
           ];
@@ -135,6 +137,7 @@ function AppHome() {
           {
             username: friendUser.reqUsername,
             userId: friendUser.reqUserId,
+            image: friendUser.reqImage,
             active: true,
           },
         ]);
@@ -145,6 +148,7 @@ function AppHome() {
             {
               username: friendUser.reqUsername,
               userId: friendUser.reqUserId,
+              image: friendUser.reqImage,
               active: true,
             },
           ];
@@ -156,6 +160,7 @@ function AppHome() {
           {
             username: friendUser.reqUsername,
             userId: friendUser.reqUserId,
+            image: friendUser.reqImage,
             active: true,
           },
         ]);
@@ -192,6 +197,7 @@ function AppHome() {
             {
               username: data.username,
               userId: data.userId,
+              image: data.image,
             },
           ];
         });
@@ -201,6 +207,7 @@ function AppHome() {
           {
             username: data.username,
             userId: data.userId,
+            image: data.image,
           },
         ]);
       }
@@ -245,6 +252,19 @@ function AppHome() {
               chats={chats}
               username={username}
               pendingList={pendingList}
+              navigation={navigation}
+              setNavigation={setNavigation}
+            />
+          )}
+        </>
+      ) : location.pathname === "/app/settings" ? (
+        <>
+          {!finalLoading && (
+            <Settings
+              chats={chats}
+              username={username}
+              pendingList={pendingList}
+              navigation={navigation}
               setNavigation={setNavigation}
             />
           )}

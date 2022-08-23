@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { authActions } from "../store/auth.redux";
@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from "react";
 
 const ProtectedRoute = () => {
   document.body.style.backgroundColor = "#36393f";
+  const navigate = useNavigate();
   const loggedIn = useSelector((state) => state.auth.loggedIn);
   const username = useSelector((state) => state.user.username);
   const dispatch = useDispatch();
@@ -57,6 +58,12 @@ const ProtectedRoute = () => {
               })
             );
             dispatch(
+              userActions.setImage({
+                type: "validate",
+                data: response.data.image,
+              })
+            );
+            dispatch(
               userActions.setUserId({
                 type: "validate",
                 data: response.data.userId,
@@ -73,6 +80,7 @@ const ProtectedRoute = () => {
           } else {
             localStorage.removeItem("token");
             setIsRequestDone(false);
+            navigate("/login");
             return;
           }
         } catch {

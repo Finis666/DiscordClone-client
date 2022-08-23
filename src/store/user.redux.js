@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialUserState = {
   username: "",
   userId: "",
+  image: "",
   isAdmin: false,
 };
 
@@ -15,6 +16,9 @@ const userSlice = createSlice({
     },
     setUserId(state, action) {
       state.userId = action.payload.data;
+    },
+    setImage(state, action) {
+      state.image = action.payload.data;
     },
     setIsAdmim(state, action) {
       state.isAdmin = action.payload.data;

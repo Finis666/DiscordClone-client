@@ -8,6 +8,9 @@ import ChatSlider from "../subComponents/ChatSlider";
 import defaultImage from "../../assets/images/default/default1.jpg";
 import SimpleBar from "simplebar-react";
 import MessageInput from "./MessageInput";
+import Button from "@mui/material/Button";
+import { useSelector } from "react-redux";
+
 function Chat(props) {
   const [messages, setMessages] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -18,6 +21,7 @@ function Chat(props) {
   const [friendProfile, setFriendProfile] = useState({});
   const scrollableNodeRef = React.createRef();
   const { conversationId } = useParams();
+  const userImage = useSelector((state) => state.user.image);
   useEffect(() => {
     if (lastConversationId.current !== props.conversationId) {
       isMount.current = false;
@@ -25,15 +29,17 @@ function Chat(props) {
       setReqError(null);
       setMessages([]);
       if (!isMount.current) {
-        props.chatList.forEach((item) => {
-          if (item.userId === props.conversationId) {
-            setFriendProfile({
-              username: item.username,
-              userId: item.userId,
-              profileImage: defaultImage,
-            });
-          }
-        });
+        if (typeof props.chatList !== "string") {
+          props.chatList.forEach((item) => {
+            if (item.userId === props.conversationId) {
+              setFriendProfile({
+                username: item.username,
+                userId: item.userId,
+                profileImage: item.image,
+              });
+            }
+          });
+        }
         lastConversationId.current = props.conversationId;
         const controller = new AbortController();
         let fetchConversation = async () => {
@@ -98,6 +104,7 @@ function Chat(props) {
           {
             username: data.username,
             sender: data.userId,
+            image: data.image,
             text: data.text,
           },
         ]);
@@ -105,7 +112,12 @@ function Chat(props) {
         setMessages((oldMessages) => {
           return [
             ...oldMessages,
-            { username: data.username, sender: data.userId, text: data.text },
+            {
+              username: data.username,
+              sender: data.userId,
+              image: data.image,
+              text: data.text,
+            },
           ];
         });
       }
@@ -135,7 +147,7 @@ function Chat(props) {
         setNavigation={props.setNavigation}
       />
       {loading && (
-        <div className="w-full pl-[300px] fixed h-full flex justify-center items-center">
+        <div className="w-full lg:pl-[300px] fixed h-full flex justify-center items-center">
           <img src={loadingGif} className="w-[300px] h-[300px]" />
         </div>
       )}
@@ -145,13 +157,24 @@ function Chat(props) {
         </>
       ) : (
         reqError === false && (
-          <div className="w-full relative h-[100vh] mx-auto flex flex-col justify-center pl-[300px] overflow-hidden">
+          <div className="w-full relative h-[100vh] mx-auto flex flex-col justify-center lg:pl-[300px] overflow-hidden">
             {/* header */}
             <div className="w-full fixed top-0 h-[50px] items-center border-b-[2px black] flex z-10 bg-[#36393f]">
-              <div className="flex justify-start pl-5">
-                <h1 className="text-white font-poopins font-semibold">
-                  @ {friendProfile.username}
-                </h1>
+              <div className="flex items-center justify-between w-full">
+                <div className="flex justify-start pl-5">
+                  <h1 className="text-white font-poopins font-semibold">
+                    @ {friendProfile.username}
+                  </h1>
+                </div>
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={() => {
+                    navigate("/app");
+                  }}
+                >
+                  Go back
+                </Button>
               </div>
               <div className="w-full h-[2px] fixed top-11 bg-black"></div>
             </div>
@@ -159,11 +182,14 @@ function Chat(props) {
             {/*  messages */}
             <SimpleBar
               scrollableNodeProps={{ ref: scrollableNodeRef }}
-              // ref={ref}
               className="flex h-[88vh] pb-[2vh] flex-col items-start justify-center pl-5 mt-12 pt-10 overflow-x-hidden overflow-y-auto"
             >
               <img
-                src={friendProfile.profileImage}
+                src={
+                  !friendProfile.profileImage
+                    ? defaultImage
+                    : `${process.env.REACT_APP_SERVER}/cdn/images/${friendProfile.profileImage}`
+                }
                 width="70px"
                 height="70px"
                 className="rounded-full"
@@ -185,7 +211,11 @@ function Chat(props) {
                         <div className="flex items-start pl-5 mt-4" key={index}>
                           <div className="shrink-0 select-none">
                             <img
-                              src={friendProfile.profileImage}
+                              src={
+                                !friendProfile.profileImage
+                                  ? defaultImage
+                                  : `${process.env.REACT_APP_SERVER}/cdn/images/${friendProfile.profileImage}`
+                              }
                               width="50px"
                               height="50px"
                               className="rounded-full"
@@ -195,7 +225,10 @@ function Chat(props) {
                             <p className="text-white font-poopins font-semibold">
                               {friendProfile.username}
                             </p>
-                            <p className="text-[#e2e2e2] font-poopins font-normal">
+                            <p
+                              className="text-[#e2e2e2] font-poopins font-normal"
+                              style={{ wordBreak: "break-word" }}
+                            >
                               {msg.text}
                             </p>
                           </div>
@@ -209,7 +242,11 @@ function Chat(props) {
                         >
                           <div className="shrink-0 select-none">
                             <img
-                              src={friendProfile.profileImage}
+                              src={
+                                !userImage
+                                  ? defaultImage
+                                  : `${process.env.REACT_APP_SERVER}/cdn/images/${userImage}`
+                              }
                               width="50px"
                               className="rounded-full"
                               height="50px"
@@ -219,7 +256,10 @@ function Chat(props) {
                             <p className="text-white font-poopins font-semibold">
                               {props.username}
                             </p>
-                            <p className="text-[#e2e2e2] font-poopins font-normal">
+                            <p
+                              className="text-[#e2e2e2] font-poopins font-normal break-all"
+                              style={{ wordBreak: "break-word" }}
+                            >
                               {msg.text}
                             </p>
                           </div>

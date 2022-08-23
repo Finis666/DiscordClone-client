@@ -14,6 +14,7 @@ function Pending(props) {
   const [currPendingLength, setCurrPendingLength] = useState(0);
   const currentUserId = useSelector((state) => state.user.userId);
   const currentUsername = useSelector((state) => state.user.username);
+  const currentImage = useSelector((state) => state.user.image);
   const socket = props.socket;
   useEffect(() => {
     if (typeof props.pendingList === "string") {
@@ -32,7 +33,7 @@ function Pending(props) {
     }
   }, [searchTerm]);
 
-  const handleAccept = async (userId, username) => {
+  const handleAccept = async (userId, username, image) => {
     try {
       let response = await axios.put(
         "/api/friends/acceptFriend",
@@ -51,28 +52,49 @@ function Pending(props) {
           props.setPendingList("You have no pending request.");
           if (typeof props.friendsList === "string") {
             props.setFriendsList([
-              { username: username, userId: userId, active: false },
+              {
+                username: username,
+                userId: userId,
+                image: image,
+                active: false,
+              },
             ]);
           } else {
             props.setFriendsList([
               ...props.friendsList,
-              { username: username, userId: userId, active: false },
+              {
+                username: username,
+                userId: userId,
+                image: image,
+                active: false,
+              },
             ]);
           }
           if (typeof props.chats === "string") {
             props.setChats([
-              { userId: userId, username: username, active: false },
+              {
+                userId: userId,
+                username: username,
+                image: image,
+                active: false,
+              },
             ]);
           } else {
             props.setChats([
               ...props.chats,
-              { userId: userId, username: username, active: false },
+              {
+                userId: userId,
+                username: username,
+                image: image,
+                active: false,
+              },
             ]);
           }
           // handling socket on accept
           socket?.emit("pending_accept", {
             currUserId: currentUserId,
             currUsername: currentUsername,
+            currImage: currentImage,
             reqId: userId,
           });
           toast(response.data[0].msg, {
@@ -90,28 +112,49 @@ function Pending(props) {
 
           if (typeof props.friendsList === "string") {
             props.setFriendsList([
-              { username: username, userId: userId, active: false },
+              {
+                username: username,
+                userId: userId,
+                image: image,
+                active: false,
+              },
             ]);
           } else {
             props.setFriendsList([
               ...props.friendsList,
-              { username: username, userId: userId, active: false },
+              {
+                username: username,
+                userId: userId,
+                image: image,
+                active: false,
+              },
             ]);
           }
           if (typeof props.chats === "string") {
             props.setChats([
-              { userId: userId, username: username, active: false },
+              {
+                userId: userId,
+                username: username,
+                image: image,
+                active: false,
+              },
             ]);
           } else {
             props.setChats([
               ...props.chats,
-              { userId: userId, username: username, active: false },
+              {
+                userId: userId,
+                username: username,
+                image: image,
+                active: false,
+              },
             ]);
           }
           // handling socket on accept
           socket?.emit("pending_accept", {
             currUserId: currentUserId,
             currUsername: currentUsername,
+            currImage: currentImage,
             reqId: userId,
           });
           toast(response.data[0].msg, {
@@ -183,13 +226,13 @@ function Pending(props) {
   };
   if (typeof props.pendingList === "string") {
     return (
-      <div className="w-full fixed h-full mx-auto flex flex-col items-center justify-center rounded-[3px] select-none mt-7 pl-[300px]">
+      <div className="w-full fixed h-full mx-auto flex flex-col items-center justify-center rounded-[3px] select-none mt-7 lg:pl-[300px]">
         <h1 className="font-poopins text-white ml-9">{props.pendingList}</h1>
       </div>
     );
   } else {
     return (
-      <div className="w-full h-full mx-auto flex flex-col justify-center rounded-[3px] select-none mt-7 pl-[300px]">
+      <div className="w-full h-full mx-auto flex flex-col justify-center rounded-[3px] select-none mt-[70px] lg:mt-7 lg:pl-[300px]">
         <ToastContainer />
         <Search setSearchTerm={setSearchTerm} />
         <h1 className="font-poopins text-[#c5c5c5] ml-9 mt-6">
@@ -216,7 +259,11 @@ function Pending(props) {
                   <div className="flex flex-row items-center mt-2 mb-2">
                     <p className="friend__status__main__offline">
                       <img
-                        src={defaultImage}
+                        src={
+                          !item.image
+                            ? defaultImage
+                            : `${process.env.REACT_APP_SERVER}/cdn/images/${item.image}`
+                        }
                         alt="default image"
                         className="w-[40px] h-[40px] rounded-[100px]"
                       />
@@ -233,7 +280,7 @@ function Pending(props) {
                         <div
                           className="bg-[#2f3136] rounded-[50px] p-2 cursor-pointer mr-2"
                           onClick={() =>
-                            handleAccept(item.userId, item.username)
+                            handleAccept(item.userId, item.username, item.image)
                           }
                         >
                           <GoVerified color="#5eff4f" size={"30px"} />

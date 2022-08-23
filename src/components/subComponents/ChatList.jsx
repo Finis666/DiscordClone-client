@@ -48,7 +48,11 @@ function ChatList(props) {
                 }
               >
                 <img
-                  src={defaultImage}
+                  src={
+                    !item.image
+                      ? defaultImage
+                      : `${process.env.REACT_APP_SERVER}/cdn/images/${item.image}`
+                  }
                   alt="Profile avatar"
                   className="w-[40px] h-[40px] rounded-[100px] ml-2"
                 />

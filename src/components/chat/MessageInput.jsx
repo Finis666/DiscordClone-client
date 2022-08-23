@@ -11,6 +11,7 @@ function MessageInput(props) {
   const [isLoading, setIsLoading] = useState(false);
   const username = useSelector((state) => state.user.username);
   const userId = useSelector((state) => state.user.userId);
+  const userImage = useSelector((state) => state.user.image);
 
   const handleOpenEmojiTab = () => {
     setIsEmojiOn(true);
@@ -60,6 +61,7 @@ function MessageInput(props) {
         props.socket?.emit("new_message", {
           username: username,
           userId: userId,
+          image: userImage,
           text: response.data[0].msg.text,
           friendId: props.userId,
         });
@@ -70,6 +72,7 @@ function MessageInput(props) {
       props.socket?.emit("new_message", {
         username: username,
         userId: userId,
+        image: userImage,
         text: response.data[0].msg.text,
         friendId: props.userId,
       });

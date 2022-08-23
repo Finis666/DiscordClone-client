@@ -4,9 +4,11 @@ import { AiFillMessage } from "react-icons/ai";
 import defaultImage from "../../../../assets/images/default/default1.jpg";
 import Tooltip from "@mui/material/Tooltip";
 import SimpleBar from "simplebar-react";
+import { useNavigate } from "react-router-dom";
 function AllFriends(props) {
   const [searchTerm, setSearchTerm] = useState("");
   const [currFriendsLength, setCurrFriendsLength] = useState(0);
+  const navigate = useNavigate();
   useEffect(() => {
     if (typeof props.friendsList === "string") {
       return;
@@ -22,14 +24,18 @@ function AllFriends(props) {
     });
     setCurrFriendsLength(filterFriendsCount.length);
   }, [searchTerm]);
+
+  const handleNavigate = (id) => {
+    navigate(`/app/chat/${id}`);
+  };
   return (
     <>
       {typeof props.friendsList === "string" ? (
-        <div className="w-full fixed h-full mx-auto flex flex-col items-center justify-center rounded-[3px] select-none mt-7 pl-[300px]">
+        <div className="w-full fixed h-full mx-auto flex flex-col items-center justify-center rounded-[3px] select-none mt-7 lg:pl-[300px]">
           <h1 className="font-poopins text-white">{props.friendsList}</h1>
         </div>
       ) : (
-        <div className="w-full h-full mx-auto flex flex-col justify-center rounded-[3px] select-none mt-7 pl-[300px]">
+        <div className="w-full h-full mx-auto flex flex-col justify-center rounded-[3px] select-none mt-[70px] lg:mt-7 lg:pl-[300px]">
           <Search setSearchTerm={setSearchTerm} />
           <h1 className="font-poopins text-[#c5c5c5] ml-9 mt-6">
             ALL FRIENDS - {currFriendsLength}
@@ -63,7 +69,11 @@ function AllFriends(props) {
                         }
                       >
                         <img
-                          src={defaultImage}
+                          src={
+                            !item.image
+                              ? defaultImage
+                              : `${process.env.REACT_APP_SERVER}/cdn/images/${item.image}`
+                          }
                           alt="default image"
                           className="w-[40px] h-[40px] rounded-[100px]"
                         />
@@ -77,7 +87,12 @@ function AllFriends(props) {
                           placement="top"
                           disableInteractive
                         >
-                          <div className="bg-[#2f3136] rounded-[50px] p-2 cursor-pointer">
+                          <div
+                            className="bg-[#2f3136] rounded-[50px] p-2 cursor-pointer"
+                            onClick={() => {
+                              handleNavigate(item.userId);
+                            }}
+                          >
                             <AiFillMessage color="#b9bbbe" size={"30px"} />
                           </div>
                         </Tooltip>
