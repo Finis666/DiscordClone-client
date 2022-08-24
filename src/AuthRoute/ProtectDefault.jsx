@@ -53,6 +53,12 @@ const ProtectedDefault = () => {
           if (response.data.success) {
             dispatch(authActions.login());
             dispatch(
+              userActions.setIsAdmim({
+                type: "validate",
+                data: response.data.isAdmin,
+              })
+            );
+            dispatch(
               userActions.setUsername({
                 type: "validate",
                 data: response.data.username,
