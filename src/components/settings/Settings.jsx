@@ -51,8 +51,8 @@ function Settings(props) {
       });
       return;
     }
-    if (username.length < 2 || username.length > 32) {
-      toast("Username must be between 2 and 32 in length!", {
+    if (username.length < 2 || username.length > 15) {
+      toast("Username must be between 2 and 15 in length!", {
         type: "error",
         toastId: "clientUsernameErr",
         pauseOnFocusLoss: false,
@@ -241,6 +241,7 @@ function Settings(props) {
               <form onSubmit={handleSubmitNewImage} className="flex">
                 <input
                   type="file"
+                  accept="image/png, image/gif, image/jpeg"
                   onChange={saveFile}
                   name="image"
                   id="image"

@@ -38,8 +38,8 @@ function AddFriend(props) {
       });
       return;
     }
-    if (username.length > 32) {
-      toast("Username must be less then 32 charcters!", {
+    if (username.length > 15) {
+      toast("Username must be less then 15 charcters!", {
         type: "error",
         toastId: "usernameErr2",
         pauseOnFocusLoss: false,
