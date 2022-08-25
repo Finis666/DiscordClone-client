@@ -26,6 +26,7 @@ const style = {
 
 function Settings(props) {
   const currentUsername = useSelector((state) => state.user.username);
+  const currentUserId = useSelector((state) => state.user.userId);
   const currentImage = useSelector((state) => state.user.image);
   const [isUsernameModalOpen, setIsUsernameModalOpen] = useState(false);
   const [username, setUsername] = useState(currentUsername);
@@ -262,6 +263,9 @@ function Settings(props) {
               onClick={() => {
                 localStorage.removeItem("token");
                 dispatch(authActions.logout());
+                props.socket?.emit("disconnect-user", {
+                  userId: currentUserId,
+                });
                 navigate("/login");
               }}
               className="font-poopins transition-all hover:bg-[#d61935] bg-[#ff0026] rounded-[4px] p-4 font-semibold text-white"

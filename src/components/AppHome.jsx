@@ -46,6 +46,7 @@ function AppHome() {
   }, [loading]);
   useEffect(() => {
     socket?.emit("addUser", { userId: userId, username: username });
+    console.log("web socket connected");
     return () => {
       socket?.off("addUser");
     };
@@ -265,6 +266,7 @@ function AppHome() {
               username={username}
               pendingList={pendingList}
               navigation={navigation}
+              socket={socket}
               setNavigation={setNavigation}
             />
           )}
